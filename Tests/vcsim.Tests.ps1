@@ -1,6 +1,12 @@
 Describe 'Connectivity' {
     It 'Sees the Docker container' {
-        Test-Connection localhost -TCPPort 443 | Should -BeTrue
+        If ($env:Agent_OS -like '*windows*') {
+            # Not pwsh v6.1
+            Test-Connection localhost -Count 1 -Quiet | Should -BeTrue
+        } Else {
+            # Use pwsh v6.1 port parameter
+            Test-Connection localhost -TCPPort 443 | Should -BeTrue
+        }
     }
 }
 
