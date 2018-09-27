@@ -5,7 +5,7 @@ Describe 'Connectivity' {
 }
 
 Describe 'PowerCLI' {
-    Set-PowerCLIConfiguration -Scope User -InvalidCertificateAction Ignore -ParticipateInCEIP $false
+    Set-PowerCLIConfiguration -Scope User -InvalidCertificateAction Ignore -ParticipateInCEIP $false -Confirm:$false
 
     Connect-VIServer -Server localhost -Port 443 -User u -Pass p
 
