@@ -1,0 +1,22 @@
+resources:
+  containers:
+  - container: vcsim
+    image: nimmis/vcsim
+    options: -d --ip 192.168.0.1 -p 443:443
+
+jobs:
+  - job: Build_Win2016
+    pool:
+      vmImage: vs2017-win2016
+    steps:
+    # Run Pester tests
+    - powershell: |
+        .\build.ps1 -Verbose
+      displayName: 'Build and Test'
+    # Analyze test results
+    - task: PublishTestResults@2
+      inputs:
+        testRunner: 'NUnit'
+        testResultsFiles: '**/TestResults.xml'
+        testRunTitle: 'Win2016'
+      displayName: 'Publish Test Results'
