@@ -5,6 +5,8 @@ Describe 'Connectivity' {
 }
 
 Describe 'PowerCLI' {
+    Set-PowerCLIConfiguration -Scope User -InvalidCertificateAction Ignore -ParticipateInCEIP $false
+
     Connect-VIServer -Server localhost -Port 443 -User u -Pass p
 
     It 'Returns one datacenter' {
