@@ -1,5 +1,5 @@
 Describe 'Connectivity' {
     It 'Sees the Docker container' {
-        Test-Connection 192.168.0.1 -TCPPort 443 | Should -BeTrue
+        Test-Connection localhost -TCPPort 443 | Should -BeTrue
     }
 }
