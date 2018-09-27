@@ -20,3 +20,9 @@ jobs:
     - script: |
         pwsh -c '.\build.ps1'
       displayName: 'Build and Test'
+    - task: PublishTestResults@2
+      inputs:
+        testRunner: 'NUnit'
+        testResultsFiles: '**/TestResults.xml'
+        testRunTitle: 'Ubuntu1604'
+      displayName: 'Publish Test Results'
