@@ -1,4 +1,24 @@
 jobs:
+  - job: Build_Win2016
+    pool:
+      vmImage: vs2017-win2016
+    steps:
+    # Install and run vcsim Docker container
+    - powershell: |
+        docker run --rm -d -p 443:443/tcp nimmis/vcsim
+      displayName: 'Run vCenter Simulator container'
+    # Run Pester tests
+    - powershell: |
+        .\build.ps1 -Verbose
+      displayName: 'Build and Test'
+    # Analyze test results
+    - task: PublishTestResults@2
+      inputs:
+        testRunner: 'NUnit'
+        testResultsFiles: '**/TestResults.xml'
+        testRunTitle: 'Win2016'
+      displayName: 'Publish Test Results'
+      
   - job: Build_Ubuntu1604
     pool:
       vmImage: ubuntu-16.04
@@ -10,6 +30,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y powershell
       displayName: 'Install PowerShell Core'
+    # Install and run vcsim Docker container
     - script: |
         docker run --rm -d -p 443:443/tcp nimmis/vcsim
       displayName: 'Run vCenter Simulator container'
@@ -17,9 +38,36 @@ jobs:
     - script: |
         pwsh -c '.\build.ps1'
       displayName: 'Build and Test'
+    # Analyze test results
     - task: PublishTestResults@2
       inputs:
         testRunner: 'NUnit'
         testResultsFiles: '**/TestResults.xml'
         testRunTitle: 'Ubuntu1604'
+      displayName: 'Publish Test Results'
+
+  - job: Build_MacOS1013
+    pool:
+      vmImage: xcode9-macos10.13
+    steps:
+    # Install PowerShell Core
+    - script: |
+        brew update
+        brew tap caskroom/cask
+        brew cask install powershell
+      displayName: 'Install PowerShell Core' 
+    # Install and run vcsim Docker container
+    - script: |
+        docker run --rm -d -p 443:443/tcp nimmis/vcsim
+      displayName: 'Run vCenter Simulator container'
+    # Run Pester tests
+    - script: |
+        pwsh -c '.\build.ps1'
+      displayName: 'Build and Test'
+    # Analyze test results
+    - task: PublishTestResults@2
+      inputs:
+        testRunner: 'NUnit'
+        testResultsFiles: '**/TestResults.xml'
+        testRunTitle: 'MacOS1013'
       displayName: 'Publish Test Results'
