@@ -5,18 +5,18 @@ resources:
     options: -d --ip 192.168.0.1 -p 443:443
 
 jobs:
-  - job: Build_Win2016
+  - job: Build_Ubuntu1604
     pool:
-      vmImage: vs2017-win2016
+      vmImage: ubuntu-16.04
     steps:
+    # Install PowerShell Core
+    - script: |
+        curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+        curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
+        sudo apt-get update
+        sudo apt-get install -y powershell
+      displayName: 'Install PowerShell Core'
     # Run Pester tests
-    - powershell: |
-        .\build.ps1 -Verbose
+    - script: |
+        pwsh -c '.\build.ps1'
       displayName: 'Build and Test'
-    # Analyze test results
-#    - task: PublishTestResults@2
-#      inputs:
-#        testRunner: 'NUnit'
-#        testResultsFiles: '**/TestResults.xml'
-#        testRunTitle: 'Win2016'
-#      displayName: 'Publish Test Results'
