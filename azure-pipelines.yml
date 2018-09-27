@@ -14,9 +14,9 @@ jobs:
         .\build.ps1 -Verbose
       displayName: 'Build and Test'
     # Analyze test results
-    - task: PublishTestResults@2
-      inputs:
-        testRunner: 'NUnit'
-        testResultsFiles: '**/TestResults.xml'
-        testRunTitle: 'Win2016'
-      displayName: 'Publish Test Results'
+#    - task: PublishTestResults@2
+#      inputs:
+#        testRunner: 'NUnit'
+#        testResultsFiles: '**/TestResults.xml'
+#        testRunTitle: 'Win2016'
+#      displayName: 'Publish Test Results'

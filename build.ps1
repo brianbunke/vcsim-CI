@@ -1,3 +1,4 @@
+<#
 # Mac/Linux boxes don't come with Pester
 # Windows has the old v3 in-box version of Pester
 Install-Module Pester -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force
@@ -10,3 +11,6 @@ Get-VM
 
 # Invoke-Pester runs all .Tests.ps1 in the order found by "Get-ChildItem -Recurse"
 Invoke-Pester -OutputFormat NUnitXml -OutputFile ".\TestResults.xml"
+#>
+
+Test-Connection 192.168.0.1 -TCPPort 443
