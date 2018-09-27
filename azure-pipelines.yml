@@ -9,7 +9,7 @@ jobs:
       displayName: 'Run vCenter Simulator container'
     # Run Pester tests
     - powershell: |
-        .\build.ps1 -Verbose
+        .\build.ps1
       displayName: 'Build and Test'
     # Analyze test results
     - task: PublishTestResults@2
