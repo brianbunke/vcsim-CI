@@ -1,6 +1,8 @@
 # Mac/Linux boxes don't come with Pester
 # Windows has the old v3 in-box version of Pester
 Install-Module Pester -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force
+
+docker run nimmis/vcsim -d --rm -p 443:443/tcp
 <#
 Install-Module VMware.PowerCLI
 
