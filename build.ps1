@@ -1,7 +1,6 @@
 # Mac/Linux boxes don't come with Pester
 # Windows has the old v3 in-box version of Pester
-# Use $null to suppress console log output
-$null = Install-Module Pester, VMware.PowerCLI -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force
+Install-Module Pester, VMware.PowerCLI -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force | Out-Null
 
 Get-Module Pester, VMware.VimAutomation.Core -ListAvailable | Select Version, Name | Format-Table -Autosize
 

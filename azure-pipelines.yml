@@ -5,10 +5,7 @@ jobs:
     steps:
     # Install PowerShell Core
     - script: |
-        curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-        curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
-        sudo apt-get update
-        sudo apt-get install -y powershell
+        docker pull mcr.microsoft.com/powershell
       displayName: 'Install PowerShell Core'
     # Install and run vcsim Docker container
     - script: |
