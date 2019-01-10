@@ -1,6 +1,6 @@
 # Mac/Linux boxes don't come with Pester
 # Windows has the old v3 in-box version of Pester
-$ProgressPreference = 'SilentlyContinue'
+# I can't figure out how to silence this step in the Azure DevOps logs
 Install-Module Pester, VMware.PowerCLI -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force
 
 Get-Module Pester, VMware.VimAutomation.Core -ListAvailable | Select-Object Version, Name | Format-Table -Autosize
