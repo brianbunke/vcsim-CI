@@ -6,4 +6,9 @@ Install-Module Pester, VMware.PowerCLI -Scope CurrentUser -AllowClobber -SkipPub
 Get-Module Pester, VMware.VimAutomation.Core -ListAvailable | Select-Object Version, Name | Format-Table -Autosize
 
 # Invoke-Pester runs all .Tests.ps1 in the order found by "Get-ChildItem -Recurse"
-Invoke-Pester -OutputFormat NUnitXml -OutputFile ".\TestResults.xml"
+$TestResults = Invoke-Pester -OutputFormat NUnitXml -OutputFile ".\TestResults.xml" -PassThru
+
+# Fail the build if any tests failed
+If ($TestResults.FailedCount -ne 0) {
+    Write-Error "Failed '$($TestResults.FailedCount)' tests, build failed"
+}
