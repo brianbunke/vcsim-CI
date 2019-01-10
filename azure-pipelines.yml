@@ -5,17 +5,22 @@ jobs:
     steps:
     # (PowerShell Core included in this Ubuntu image)
 
-    # Install and run vcsim Docker container
     - script: |
         docker run --rm -d -p 443:443/tcp nimmis/vcsim
       displayName: 'Run vCenter Simulator container'
     
-    # Run Pester tests
-    - script: |
-        pwsh -c '.\build.ps1'
-      displayName: 'Build and Test'
+    - powershell: |
+        Install-Module Pester, VMware.PowerCLI -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force
+        Get-Module Pester, VMware.VimAutomation.Core -ListAvailable | Select-Object Version, Name | Format-Table -Autosize
+      displayName: 'Install PowerShell Modules'
     
-    # Analyze test results
+    - powershell: |
+        $TestResults = Invoke-Pester -OutputFormat NUnitXml -OutputFile ".\TestResults.xml" -PassThru
+        If ($TestResults.FailedCount -ne 0) {
+            Write-Error "$($TestResults.FailedCount) test(s) failed"
+        }
+      displayName: 'Run Pester tests'
+    
     - task: PublishTestResults@2
       inputs:
         testRunner:          'NUnit'
