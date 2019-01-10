@@ -10,5 +10,5 @@ $TestResults = Invoke-Pester -OutputFormat NUnitXml -OutputFile ".\TestResults.x
 
 # Fail the build if any tests failed
 If ($TestResults.FailedCount -ne 0) {
-    Write-Error "Failed '$($TestResults.FailedCount)' tests, build failed"
+    exit
 }
