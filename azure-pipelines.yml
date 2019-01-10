@@ -26,7 +26,9 @@ jobs:
     # Fail the build if any tests failed
     # https://github.com/Microsoft/azure-pipelines-tasks/issues/1268#issuecomment-433056150
     - powershell: |
-        $NUnitXML = '**/TestResults.xml'
+        Get-Location
+        Get-ChildItem -Filter 'TestResults.xml' -File -Recurse
+        $NUnitXML = 'TestResults.xml'
         $(Get-Content $NUnitXML | Out-String) -match 'failures="(.*?)"'
         if ($matches[1] -eq 0)
         {
