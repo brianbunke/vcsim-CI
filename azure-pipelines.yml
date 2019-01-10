@@ -4,7 +4,7 @@ jobs:
       vmImage: ubuntu-16.04
     steps:
     # (PowerShell Core included in this Ubuntu image)
-    
+
     # Install and run vcsim Docker container
     - script: |
         docker run --rm -d -p 443:443/tcp nimmis/vcsim
@@ -16,7 +16,8 @@ jobs:
     # Analyze test results
     - task: PublishTestResults@2
       inputs:
-        testRunner: 'NUnit'
-        testResultsFiles: '**/TestResults.xml'
-        testRunTitle: 'Ubuntu1604'
+        testRunner:          'NUnit'
+        testResultsFiles:    '**/TestResults.xml'
+        failOnStandardError: 'true'
+        testRunTitle:        'Ubuntu1604'
       displayName: 'Publish Test Results'
