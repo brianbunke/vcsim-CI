@@ -9,15 +9,32 @@ jobs:
     - script: |
         docker run --rm -d -p 443:443/tcp nimmis/vcsim
       displayName: 'Run vCenter Simulator container'
+    
     # Run Pester tests
     - script: |
         pwsh -c '.\build.ps1'
       displayName: 'Build and Test'
+    
     # Analyze test results
     - task: PublishTestResults@2
       inputs:
         testRunner:          'NUnit'
         testResultsFiles:    '**/TestResults.xml'
-        failOnStandardError: 'true'
         testRunTitle:        'Ubuntu1604'
       displayName: 'Publish Test Results'
+
+    # Fail the build if any tests failed
+    # https://github.com/Microsoft/azure-pipelines-tasks/issues/1268#issuecomment-433056150
+    - powershell: |
+        $NUnitXML = '**/TestResults.xml'
+        $(Get-Content $NUnitXML | Out-String) -match 'failures="(.*?)"'
+        if ($matches[1] -eq 0)
+        {
+          Write-Host "No test failures"
+        }
+        else
+        {
+          # note that this will produce $LASTEXITCODE=1
+          Write-Error "$($matches[1]) tests failed"
+        }
+      displayName: Check for Test Failures
