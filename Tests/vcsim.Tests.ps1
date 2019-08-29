@@ -19,6 +19,6 @@ Describe 'PowerCLI' {
         (Get-VM).Count | Should -Be 4
     }
     It 'Purposely fails (testing Azure DevOps build reports)' {
-        1 | Should -Be 2
+        1 | Should -Be 3
     }
 }
