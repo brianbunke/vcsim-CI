@@ -10,7 +10,7 @@ jobs:
       displayName: 'Run vCenter Simulator container'
     
     - script: |
-        pwsh -c './build.ps1'
+        pwsh -c './build.ps1 -Verbose'
       displayName: 'Install PowerShell Modules'
     
     - powershell: |
