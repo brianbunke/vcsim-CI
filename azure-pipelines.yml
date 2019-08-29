@@ -22,6 +22,7 @@ jobs:
       displayName: 'Run Pester tests'
     
     - task: PublishTestResults@2
+      condition: always()
       inputs:
         testRunner:          'NUnit'
         testResultsFiles:    '**/TestResults.xml'
