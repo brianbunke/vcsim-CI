@@ -1,14 +1,11 @@
 # Mac/Linux boxes don't come with Pester
 # Windows has the old v3 in-box version of Pester
 # I can't figure out how to silence this step in the Azure DevOps logs
-Install-Module Pester, VMware.PowerCLI -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force
+Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+Install-Module Pester, VMware.PowerCLI -Repository PSGallery -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force
 
+# For PowerCLI, opt out of CEIP and suppress self-signed cert errors
+Set-PowerCLIConfiguration -Scope User -InvalidCertificateAction Ignore -ParticipateInCEIP $false -Confirm:$false
+
+# Record module versions for potential troubleshooting purposes
 Get-Module Pester, VMware.VimAutomation.Core -ListAvailable | Select-Object Version, Name | Format-Table -Autosize
-
-# Invoke-Pester runs all .Tests.ps1 in the order found by "Get-ChildItem -Recurse"
-$TestResults = Invoke-Pester -OutputFormat NUnitXml -OutputFile ".\TestResults.xml" -PassThru
-
-# Fail the build if any tests failed
-If ($TestResults.FailedCount -ne 0) {
-    exit
-}
