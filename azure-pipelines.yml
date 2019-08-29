@@ -10,7 +10,7 @@ jobs:
       displayName: 'Run vCenter Simulator container'
     
     - powershell: |
-        Install-Module Pester, VMware.PowerCLI -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force
+        $null = Install-Module Pester, VMware.PowerCLI -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force
         Get-Module Pester, VMware.VimAutomation.Core -ListAvailable | Select-Object Version, Name | Format-Table -Autosize
       displayName: 'Install PowerShell Modules'
     
