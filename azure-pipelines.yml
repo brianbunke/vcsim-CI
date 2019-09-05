@@ -5,12 +5,10 @@ jobs:
     steps:
     # (PowerShell Core included in this Ubuntu image)
 
-    - script: |
-        docker run --rm -d -p 443:443/tcp nimmis/vcsim
+    - script: docker run --rm -d -p 443:443/tcp nimmis/vcsim
       displayName: 'Run vCenter Simulator container'
     
-    - script: |
-        pwsh -c './build.ps1 -Verbose'
+    - powershell: ./build.ps1 -Verbose
       displayName: 'Install PowerShell Modules'
     
     - powershell: |
