@@ -5,10 +5,10 @@ jobs:
     steps:
     # (PowerShell Core included in this Ubuntu image)
 
-    - script: docker run --rm -d -p 443:443/tcp nimmis/vcsim
+    - script:      docker run --rm -d -p 443:443/tcp nimmis/vcsim
       displayName: 'Run vCenter Simulator container'
     
-    - powershell: ./build.ps1 -Verbose
+    - powershell:  ./build.ps1 -Verbose
       displayName: 'Install PowerShell Modules'
     
     - powershell: |
@@ -21,7 +21,7 @@ jobs:
     - task: PublishTestResults@2
       condition: always()
       inputs:
-        testRunner:          'NUnit'
-        testResultsFiles:    '**/TestResults.xml'
-        testRunTitle:        'Ubuntu1604'
+        testRunner:       'NUnit'
+        testResultsFiles: '**/TestResults.xml'
+        testRunTitle:     'Ubuntu1604'
       displayName: 'Publish Test Results'

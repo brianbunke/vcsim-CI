@@ -1,7 +1,7 @@
+Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 # Mac/Linux boxes don't come with Pester
 # Windows has the old v3 in-box version of Pester
-# I can't figure out how to silence this step in the Azure DevOps logs
-Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+# On Ubuntu, this step spams the Azure Pipelines log with progress bars
 Install-Module Pester, VMware.PowerCLI -Repository PSGallery -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force
 
 # For PowerCLI, opt out of CEIP and suppress self-signed cert errors
