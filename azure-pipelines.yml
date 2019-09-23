@@ -1,9 +1,9 @@
 jobs:
-  - job: Build_Ubuntu1604
+  - job: Build_Windows
     pool:
-      vmImage: ubuntu-16.04
+      vmImage: windows-latest
     steps:
-    # (PowerShell Core included in this Ubuntu image)
+    # (PowerShell Core included in this image)
 
     - script:      docker run --rm -d -p 443:443/tcp nimmis/vcsim
       displayName: 'Run vCenter Simulator container'
@@ -23,5 +23,32 @@ jobs:
       inputs:
         testRunner:       'NUnit'
         testResultsFiles: '**/TestResults.xml'
-        testRunTitle:     'Ubuntu1604'
+        testRunTitle:     'Windows'
+      displayName: 'Publish Test Results'
+
+  - job: Build_Ubuntu
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    # (PowerShell Core included in this image)
+
+    - script:      docker run --rm -d -p 443:443/tcp nimmis/vcsim
+      displayName: 'Run vCenter Simulator container'
+    
+    - powershell:  ./build.ps1 -Verbose
+      displayName: 'Install PowerShell Modules'
+    
+    - powershell: |
+        $TestResults = Invoke-Pester -OutputFormat NUnitXml -OutputFile ".\TestResults.xml" -PassThru
+        If ($TestResults.FailedCount -ne 0) {
+            Write-Error "$($TestResults.FailedCount) test(s) failed"
+        }
+      displayName: 'Run Pester tests'
+    
+    - task: PublishTestResults@2
+      condition: always()
+      inputs:
+        testRunner:       'NUnit'
+        testResultsFiles: '**/TestResults.xml'
+        testRunTitle:     'Ubuntu'
       displayName: 'Publish Test Results'

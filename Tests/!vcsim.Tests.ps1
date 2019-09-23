@@ -1,6 +1,10 @@
 Describe 'Connectivity' {
-    It 'Sees the Docker container' {
-        Test-Connection localhost -TCPPort 443 | Should -BeTrue
+    If ($PSVersionTable.PSVersion.Major -ge 6) {
+        It 'Sees the Docker container' {
+            Test-Connection localhost -TCPPort 443 | Should -BeTrue
+        }
+    } Else {
+        It 'Sees the Docker container' -Skip
     }
 }
 
